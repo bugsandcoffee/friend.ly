@@ -2,47 +2,55 @@
 //  ContentView.swift
 //  friend.ly
 //
-//  Created by Mac on 2021-09-24.
+//  Created by Bugs and Coffee on 2021-09-24.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @State var navInt:Int = 1
     var body: some View {
         VStack {
             HStack {
-                Button(action: {}) {
+                Button(action: {self.navInt = 0}) {
                     Image("profile")
                 }
                 Spacer()
-                Button(action: {}) {
+                Button(action: {self.navInt = 1}) {
                     Image("tinder-icon").resizable().aspectRatio(contentMode:.fit).frame(height:45)
                 }
                 Spacer()
-                Button(action: {}) {
+                Button(action: {self.navInt = 2}) {
                     Image("chats")
                 }
             }.padding(.horizontal)
-            ZStack {
-                ForEach(Card.data.reversed()) { card in
-                    CardView(card: card).padding(8)
+            if navInt == 1 {
+                ZStack {
+                    ForEach(Card.data.reversed()) { card in
+                        CardView(card: card).padding(8)
+                    }
+                }.zIndex(1.0)
+                
+                HStack(spacing: 0) {
+                    Button(action: {}) {
+                        Image("refresh")
+                    }
+                    Button(action: {}) {
+                        Image("dismiss")
+                    }
+                    Button(action: {}) {
+                        Image("super_like")
+                    }
+                    Button(action: {}) {
+                        Image("like")
+                    }
+                    Button(action: {}) {
+                        Image("boost")
+                    }
                 }
-            }.zIndex(1.0)
-            HStack(spacing: 0) {
-                Button(action: {}) {
-                    Image("refresh")
-                }
-                Button(action: {}) {
-                    Image("dismiss")
-                }
-                Button(action: {}) {
-                    Image("super_like")
-                }
-                Button(action: {}) {
-                    Image("like")
-                }
-                Button(action: {}) {
-                    Image("boost")
+            } else if navInt == 2 {
+                ZStack {
+                    MessengerView()
                 }
             }
         }
@@ -120,3 +128,96 @@ struct CardView: View {
         )
     }
 }
+
+struct MessengerView: View {
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            TopView()
+            Centerview()
+            Spacer()
+        }
+    }
+}
+
+struct TopView : View {
+    var body : some View {
+        VStack(spacing: 20) {
+            HStack {
+                Text("Messages")
+                    .fontWeight(.bold)
+                    .font(.title)
+                    .foregroundColor(Color.black.opacity(0.7))
+                    .padding(20)
+                Spacer()
+                Button(action: {
+                    
+                }) {
+                    Image("menu")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(Color.black.opacity(0.4))
+                }
+            }
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                
+                HStack(spacing: 18) {
+                    ForEach(1...7, id: \.self) {i in
+                        Button(action: {
+                            
+                        }) {
+                            Image("p\(i)")
+                                .resizable()
+                                .frame(width: 40, height: 60)
+                                .cornerRadius(20)
+                        }
+                    }
+                }
+            }.padding(20)
+        }
+    }
+}
+
+struct Centerview : View {
+    var body : some View {
+        List(dataM) {i in
+            cellView(dataM : i).padding(10)
+        }
+    }
+}
+
+struct cellView : View {
+    
+    var dataM : Msg
+    var body : some View {
+        HStack(spacing: 12) {
+            Image(dataM.img)
+                .resizable()
+                .frame(width: 30, height: 40)
+            VStack(alignment: .leading, spacing: 12) {
+                Text(dataM.name).fontWeight(.bold)
+                Text(dataM.msg).font(.caption)
+            }
+            Spacer(minLength: 0)
+            VStack {
+                Text(dataM.date)
+                Spacer()
+            }
+        }
+    }
+}
+
+struct Msg : Identifiable {
+    var id : Int
+    var name : String
+    var msg: String
+    var date : String
+    var img : String
+}
+
+var dataM = [
+    Msg(id: 0, name: "Emily", msg: "Hello!", date: "25/03/20", img: "p1"),
+    Msg(id: 1, name: "Emma", msg: "How are you?", date: "25/04/21", img: "p2"),
+    Msg(id: 2, name: "Julia", msg: "Hi Martin. What are you up to tonight?", date: "21/02/19", img: "p3"),
+]

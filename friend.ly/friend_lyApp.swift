@@ -2,7 +2,7 @@
 //  friend_lyApp.swift
 //  friend.ly
 //
-//  Created by Mac on 2021-09-24.
+//  Created by Bugs and Coffee on 2021-09-24.
 //
 
 import SwiftUI
