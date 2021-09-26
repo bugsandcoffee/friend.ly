@@ -7,8 +7,20 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
+    
+    init() {
+      
+        sessionStore.listen()
+    }
+    
     @State var navInt:Int = 1
+    
+    @ObservedObject var sessionStore = SessionStore()
+    
+    
+    
     var body: some View {
         VStack {
             HStack {
@@ -51,6 +63,9 @@ struct ContentView: View {
             } else if navInt == 2 {
                 ZStack {
                     MessengerView()
+                        .fullScreenCover(isPresented: $sessionStore.isAnon, content: {
+                            Login()
+                        })
                 }
             }
         }
@@ -61,6 +76,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .previewDevice("iPhone 11 Pro")
+
     }
 }
 
